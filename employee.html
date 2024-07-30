@@ -162,7 +162,7 @@
 
         // Función para cargar los datos de los empleados
         function loadUsers() {
-            fetch('http://3.86.35.155:3000/api/employees')
+            fetch('http://44.204.7.216:3000/api/employees')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -198,7 +198,7 @@
             const salary = document.getElementById('salary').value;
             const jornada = document.getElementById('jornada').value;
 
-            fetch('http://3.86.35.155:3000/api/employees', {
+            fetch('http://44.204.7.216:3000/api/employees', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
