@@ -158,77 +158,77 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#users-table').DataTable();
-            loadUsers();
-        });
+            $(document).ready(function () {
+        $('#users-table').DataTable();
+        loadUsers();
+    });
 
-        // Función para cargar los datos de los usuarios
-        function loadUsers() {
-            fetch('http://3.86.35.155:3000/api/customers')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(users => {
-                    const table = $('#users-table').DataTable();
-                    table.clear(); // Limpiar la tabla antes de insertar nuevos datos
-
-                    users.forEach(user => {
-                        table.row.add([
-                            user.id || 'N/A',
-                            user.name || 'N/A',
-                            user.email || 'N/A',
-                            user.age || 'N/A',
-                            user.fono || 'N/A',
-                            user.direccion || 'N/A',
-                        ]).draw();
-                    });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
-        // Función para agregar un nuevo usuario
-        function addUser(event) {
-            event.preventDefault(); // Prevenir el envío del formulario
-
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const age = document.getElementById('age').value;
-            const fono = document.getElementById('fono').value;
-            const direccion = document.getElementById('direccion').value;
-
-            fetch('http://3.86.35.155:3000/api/customers', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name, email, age, fono, direccion })
+    // Función para cargar los datos de los usuarios
+    function loadUsers() {
+        fetch('http://3.86.35.155:3000/api/customers')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                return response.json();
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(() => {
-                    // Cargar los usuarios nuevamente después de agregar uno nuevo
-                    loadUsers();
-                    // Limpiar el formulario
-                    document.getElementById('user-form').reset();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+            .then(users => {
+                const table = $('#users-table').DataTable();
+                table.clear(); // Limpiar la tabla antes de insertar nuevos datos
+
+                users.forEach(user => {
+                    table.row.add([
+                        user.id || 'N/A',
+                        user.name || 'N/A',
+                        user.email || 'N/A',
+                        user.age || 'N/A',
+                        user.fono || 'N/A',
+                        user.direccion || 'N/A',
+                    ]).draw();
                 });
-        }
-        // Cargar los empleados cuando se cargue la página
-        document.addEventListener('DOMContentLoaded', loadUsers);
-        // Manejar el envío del formulario
-        document.getElementById('user-form').addEventListener('submit', addUser);
+            })
+            .catch(error => {
+                console.error('Error cargando los usuarios:', error);
+            });
+    }
+
+    // Función para agregar un nuevo usuario
+    function addUser(event) {
+        event.preventDefault(); // Prevenir el envío del formulario
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const age = document.getElementById('age').value;
+        const fono = document.getElementById('fono').value;
+        const direccion = document.getElementById('direccion').value;
+
+        fetch('http://3.86.35.155:3000/api/customers', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email, age, fono, direccion })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(() => {
+                // Cargar los usuarios nuevamente después de agregar uno nuevo
+                loadUsers();
+                // Limpiar el formulario
+                document.getElementById('user-form').reset();
+            })
+            .catch(error => {
+                console.error('Error agregando el usuario:', error);
+            });
+    }
+
+    // Manejar el envío del formulario
+    document.getElementById('user-form').addEventListener('submit', addUser);
+
     </script>
 </body>
 
