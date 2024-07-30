@@ -156,78 +156,79 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script>
-        $(document).ready(function () {
-            // Inicializar DataTables
-            const table = $('#users-table').DataTable();
+            $(document).ready(function () {
+        // Inicializar DataTables
+        const table = $('#users-table').DataTable();
 
-            // Función para cargar los datos de los empleados
-            function loadUsers() {
-                fetch('http://localhost:3001/api/employees')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(users => {
-                        table.clear(); // Limpiar la tabla antes de insertar nuevos datos
-
-                        users.forEach(user => {
-                            table.row.add([
-                                user.id || 'N/A',
-                                user.name || 'N/A',
-                                user.email || 'N/A',
-                                user.position || 'N/A',
-                                user.salary || 'N/A',
-                                user.jornada || 'N/A'
-                            ]).draw();
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            }
-
-            // Función para agregar un nuevo usuario
-            function addUser(event) {
-                event.preventDefault(); // Prevenir el envío del formulario
-
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const position = document.getElementById('position').value;
-                const salary = document.getElementById('salary').value;
-                const jornada = document.getElementById('jornada').value;
-
-                fetch('http://localhost:3001/api/employees', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name, email, position, salary, jornada })
+        // Función para cargar los datos de los empleados
+        function loadUsers() {
+            fetch('http://3.86.35.155:3000/api/employees')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.statusText}`);
+                    }
+                    return response.json();
                 })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(() => {
-                        // Cargar los empleados nuevamente después de agregar uno nuevo
-                        loadUsers();
-                        // Limpiar el formulario
-                        document.getElementById('user-form').reset();
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
+                .then(users => {
+                    table.clear(); // Limpiar la tabla antes de insertar nuevos datos
+
+                    users.forEach(user => {
+                        table.row.add([
+                            user.id || 'N/A',
+                            user.name || 'N/A',
+                            user.email || 'N/A',
+                            user.position || 'N/A',
+                            user.salary || 'N/A',
+                            user.jornada || 'N/A'
+                        ]).draw();
                     });
-            }
+                })
+                .catch(error => {
+                    console.error('Error cargando los empleados:', error);
+                });
+        }
 
-            // Cargar los empleados cuando se cargue la página
-            loadUsers();
+        // Función para agregar un nuevo usuario
+        function addUser(event) {
+            event.preventDefault(); // Prevenir el envío del formulario
 
-            // Manejar el envío del formulario
-            document.getElementById('user-form').addEventListener('submit', addUser);
-        });
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const position = document.getElementById('position').value;
+            const salary = document.getElementById('salary').value;
+            const jornada = document.getElementById('jornada').value;
+
+            fetch('http://3.86.35.155:3000/api/employees', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, position, salary, jornada })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    // Cargar los empleados nuevamente después de agregar uno nuevo
+                    loadUsers();
+                    // Limpiar el formulario
+                    document.getElementById('user-form').reset();
+                })
+                .catch(error => {
+                    console.error('Error agregando el empleado:', error);
+                });
+        }
+
+        // Cargar los empleados cuando se cargue la página
+        loadUsers();
+
+        // Manejar el envío del formulario
+        document.getElementById('user-form').addEventListener('submit', addUser);
+    });
+
     </script>
 </body>
 

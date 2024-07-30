@@ -162,10 +162,10 @@
 
             // Función para cargar los datos de los productos
             function loadProducts() {
-                fetch('http://localhost:3001/api/products')
+                fetch('http://3.86.35.155:3000/api/products') // Actualiza esta URL si es necesario
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('Network response was not ok');
+                            throw new Error(`Network response was not ok: ${response.statusText}`);
                         }
                         return response.json();
                     })
@@ -184,7 +184,7 @@
                         });
                     })
                     .catch(error => {
-                        console.error('Error:', error);
+                        console.error('Error cargando los productos:', error);
                     });
             }
 
@@ -198,7 +198,13 @@
                 const stock = document.getElementById('stock').value;
                 const descripcion = document.getElementById('descripcion').value;
 
-                fetch('http://localhost:3001/api/products', {
+                // Validar que el precio sea un número
+                if (isNaN(price) || price <= 0) {
+                    alert('Please enter a valid price.');
+                    return;
+                }
+
+                fetch('http://3.86.35.155:3000/api/products', { // Actualiza esta URL si es necesario
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -207,7 +213,7 @@
                 })
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('Network response was not ok');
+                            throw new Error(`Network response was not ok: ${response.statusText}`);
                         }
                         return response.json();
                     })
@@ -218,7 +224,7 @@
                         document.getElementById('product-form').reset();
                     })
                     .catch(error => {
-                        console.error('Error:', error);
+                        console.error('Error agregando el producto:', error);
                     });
             }
 
@@ -228,6 +234,7 @@
             // Manejar el envío del formulario
             document.getElementById('product-form').addEventListener('submit', addProduct);
         });
+
     </script>
 </body>
 
