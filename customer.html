@@ -165,7 +165,7 @@
 
         // Función para cargar los datos de los usuarios
         function loadUsers() {
-            fetch('http://localhost:3001/api/customers')
+            fetch('http://http://107.22.129.47:3001/api/customers')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -202,7 +202,7 @@
             const fono = document.getElementById('fono').value;
             const direccion = document.getElementById('direccion').value;
 
-            fetch('http://localhost:3001/api/customers', {
+            fetch('http://http://107.22.129.47:3001/api/customers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
